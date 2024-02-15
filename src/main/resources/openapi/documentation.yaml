@@ -1,0 +1,104 @@
+openapi: "3.0.3"
+info:
+  title: "paw_arbeidssoekerregisteret_eksternt_api API"
+  description: "paw_arbeidssoekerregisteret_eksternt_api API"
+  version: "1.0.0"
+servers:
+- url: "https://paw_arbeidssoekerregisteret_eksternt_api"
+paths:
+  /api/v1/arbeidssoekerperioder:
+    post:
+      description: ""
+      requestBody:
+        content:
+          'application/json':
+            schema:
+              $ref: "#/components/schemas/EksternRequest"
+        required: true
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            'string':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "Ugyldig dato 'fraStartetDato' må være satt med yyyy-mm-dd"
+                Example#2:
+                  value: "Ugyldig request body"
+        "200":
+          description: "OK"
+          content:
+            'application/json':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/ArbeidssoekerperiodeResponse"
+  /internal/isAlive:
+    get:
+      description: ""
+      responses:
+        "200":
+          description: "OK"
+          content:
+            text/plain:
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "ALIVE"
+  /internal/isReady:
+    get:
+      description: ""
+      responses:
+        "200":
+          description: "OK"
+          content:
+            text/plain:
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "READY"
+  /internal/metrics:
+    get:
+      description: ""
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+components:
+  schemas:
+    EksternRequest:
+      type: "object"
+      properties:
+        identitetsnummer:
+          type: "string"
+          example: "12345678901"
+        fraStartetDato:
+          type: "string"
+          format: "date"
+          example: "2021-01-01"
+      required:
+      - "identitetsnummer"
+      - "fraStartetDato"
+    ArbeidssoekerperiodeResponse:
+      type: "object"
+      properties:
+        periodeId:
+          type: "string"
+          format: "uuid"
+        startet:
+          type: "string"
+          format: "date-time"
+        avsluttet:
+          type: "string"
+          format: "date-time"
+          nullable: true
+      required:
+      - "periodeId"
+      - "startet"
