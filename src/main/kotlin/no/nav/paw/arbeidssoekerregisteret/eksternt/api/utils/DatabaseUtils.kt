@@ -13,6 +13,7 @@ fun main() {
 }
 
 fun migrateDatabase(dataSource: DataSource) {
+    cleanDatabase(dataSource) // TODO: FJERN DENNE MED EN ENESTE GANG!
     Flyway.configure().baselineOnMigrate(true).dataSource(dataSource).load().migrate()
 }
 
