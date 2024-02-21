@@ -1,4 +1,4 @@
-gruppeId = "paw.arbeidssoekerregisteret-eksternt-api-v1"
+gruppeId = "paw.arbeidssoekerregisteret-eksternt-api-v2"
 periodeTopic = "paw.arbeidssokerperioder-beta-v7"
 
 [database]
