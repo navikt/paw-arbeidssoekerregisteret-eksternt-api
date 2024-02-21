@@ -47,6 +47,10 @@ fun Application.module() {
             exitProcess(1)
         }
     }
+    // Oppdaterer grafana gauge for antall aktive perioder
+    thread {
+        dependencies.aktivePerioderGaugeScheduler.scheduleGetAktivePerioderTask()
+    }
 
     // Ruter
     routing {

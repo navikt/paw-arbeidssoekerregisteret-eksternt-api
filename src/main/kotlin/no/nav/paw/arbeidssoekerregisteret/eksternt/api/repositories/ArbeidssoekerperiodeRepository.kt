@@ -95,4 +95,9 @@ class ArbeidssoekerperiodeRepository(private val database: Database) {
             }
         }
     }
+
+    fun hentAntallAktivePerioder(): Long =
+        transaction(database) {
+            PeriodeTable.selectAll().where { PeriodeTable.avsluttet eq null }.count()
+        }
 }

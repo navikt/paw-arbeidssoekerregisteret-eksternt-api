@@ -5,6 +5,7 @@ import io.micrometer.prometheus.PrometheusMeterRegistry
 import no.nav.paw.arbeidssoekerregisteret.eksternt.api.config.APPLICATION_CONFIG_FILE
 import no.nav.paw.arbeidssoekerregisteret.eksternt.api.config.ApplicationConfiguration
 import no.nav.paw.arbeidssoekerregisteret.eksternt.api.kafka.PeriodeConsumer
+import no.nav.paw.arbeidssoekerregisteret.eksternt.api.metrics.AktivePerioderGaugeScheduler
 import no.nav.paw.arbeidssoekerregisteret.eksternt.api.repositories.ArbeidssoekerperiodeRepository
 import no.nav.paw.arbeidssoekerregisteret.eksternt.api.services.ArbeidssoekerService
 import no.nav.paw.arbeidssoekerregisteret.eksternt.api.services.ScheduleDeletionService
@@ -30,7 +31,7 @@ fun createDependencies(): Dependencies {
     val periodeRepository = ArbeidssoekerperiodeRepository(database)
     val arbeidssoekerService = ArbeidssoekerService(periodeRepository)
     val scheduleDeletionService = ScheduleDeletionService(periodeRepository)
-
+    val aktivePerioderGaugeScheduler = AktivePerioderGaugeScheduler(registry, periodeRepository)
     val kafkaFactory = KafkaFactory(kafkaConfig)
 
     val consumer =
@@ -49,6 +50,7 @@ fun createDependencies(): Dependencies {
         periodeConsumer,
         dataSource,
         scheduleDeletionService,
+        aktivePerioderGaugeScheduler,
         consumer
     )
 }
@@ -59,5 +61,6 @@ data class Dependencies(
     val periodeConsumer: PeriodeConsumer,
     val dataSource: DataSource,
     val scheduleDeletionService: ScheduleDeletionService,
+    val aktivePerioderGaugeScheduler: AktivePerioderGaugeScheduler,
     val consumer: KafkaConsumer<String, Periode>
 )
