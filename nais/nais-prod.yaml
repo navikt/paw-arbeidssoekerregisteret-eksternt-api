@@ -25,13 +25,6 @@ spec:
               orgno: "889640782"
             - name: "Statens lånekassen for utdanning"
               orgno: "960885406"
-  env:
-    - name: OTEL_METRICS_EXPORTER
-      value: "none"
-    - name: OTEL_TRACES_EXPORTER
-      value: "maskert_oltp"
-    - name: OTEL_JAVAAGENT_DEBUG
-      value: "false"
   replicas:
     min: 1
     max: 1
