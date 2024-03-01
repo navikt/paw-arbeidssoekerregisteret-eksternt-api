@@ -1,5 +1,5 @@
-gruppeId = "paw.arbeidssoekerregisteret-eksternt-api-v3"
-periodeTopic = "paw.arbeidssokerperioder-beta-v8"
+gruppeId = "paw.arbeidssoekerregisteret-eksternt-api-v4"
+periodeTopic = "paw.arbeidssokerperioder-beta-v11"
 
 [database]
 host = "${NAIS_DATABASE_PAW_ARBEIDSSOEKERREGISTERET_EKSTERNT_API_ARBEIDSSOEKERREGISTERETAPIEKSTERN_HOST}"
