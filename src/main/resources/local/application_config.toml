@@ -1,5 +1,5 @@
-gruppeId = "paw.arbeidssoekerregisteret-eksternt-api-v2"
-periodeTopic = "paw.arbeidssokerperioder-beta-v7"
+gruppeId = "paw.arbeidssoekerregisteret-eksternt-api-v5"
+periodeTopic = "paw.arbeidssokerperioder-beta-v11"
 
 [database]
 host = "localhost"

@@ -10,6 +10,7 @@ import no.nav.paw.arbeidssoekerregisteret.eksternt.api.plugins.configureSerializ
 import no.nav.paw.arbeidssoekerregisteret.eksternt.api.routes.arbeidssoekerRoutes
 import no.nav.paw.arbeidssoekerregisteret.eksternt.api.routes.healthRoutes
 import no.nav.paw.arbeidssoekerregisteret.eksternt.api.routes.swaggerRoutes
+import no.nav.paw.arbeidssoekerregisteret.eksternt.api.utils.cleanDatabase
 import no.nav.paw.arbeidssoekerregisteret.eksternt.api.utils.logger
 import no.nav.paw.arbeidssoekerregisteret.eksternt.api.utils.migrateDatabase
 import kotlin.concurrent.thread
@@ -23,6 +24,7 @@ fun Application.module() {
     val dependencies = createDependencies()
     val environmentConfig = environment.config
 
+    cleanDatabase(dependencies.dataSource)
     // Migrerer database
     migrateDatabase(dependencies.dataSource)
 
