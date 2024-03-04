@@ -24,7 +24,6 @@ fun Application.module() {
     val dependencies = createDependencies()
     val environmentConfig = environment.config
 
-    cleanDatabase(dependencies.dataSource)
     // Migrerer database
     migrateDatabase(dependencies.dataSource)
 
