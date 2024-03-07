@@ -2,6 +2,7 @@ package no.nav.paw.arbeidssoekerregisteret.eksternt.api.services
 
 import no.nav.paw.arbeidssoekerregisteret.eksternt.api.repositories.ArbeidssoekerperiodeRepository
 import no.nav.paw.arbeidssoekerregisteret.eksternt.api.utils.TimeUtils.getMaxDateForDatabaseStorage
+import no.nav.paw.arbeidssoekerregisteret.eksternt.api.utils.getDelayUntilMidnight
 import no.nav.paw.arbeidssoekerregisteret.eksternt.api.utils.getDeletionInterval
 import no.nav.paw.arbeidssoekerregisteret.eksternt.api.utils.logger
 import no.nav.paw.arbeidssoekerregisteret.eksternt.api.utils.toInstant
@@ -22,5 +23,5 @@ class ScheduleDeletionService(arbeidssoekerperiodeRepository: Arbeidssoekerperio
             }
         }
 
-    fun scheduleDatabaseDeletionTask() = timer.scheduleAtFixedRate(task, 0L, getDeletionInterval())
+    fun scheduleDatabaseDeletionTask() = timer.scheduleAtFixedRate(task, getDelayUntilMidnight(), getDeletionInterval())
 }

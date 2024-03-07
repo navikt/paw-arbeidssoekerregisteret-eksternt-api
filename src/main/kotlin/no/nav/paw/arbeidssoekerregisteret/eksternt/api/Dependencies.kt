@@ -17,7 +17,7 @@ import no.nav.paw.config.kafka.KAFKA_CONFIG_WITH_SCHEME_REG
 import no.nav.paw.config.kafka.KafkaConfig
 import no.nav.paw.config.kafka.KafkaFactory
 import org.apache.kafka.clients.consumer.KafkaConsumer
-import org.apache.kafka.common.serialization.StringDeserializer
+import org.apache.kafka.common.serialization.LongDeserializer
 import org.jetbrains.exposed.sql.Database
 import javax.sql.DataSource
 
@@ -35,10 +35,10 @@ fun createDependencies(): Dependencies {
     val kafkaFactory = KafkaFactory(kafkaConfig)
 
     val consumer =
-        kafkaFactory.createConsumer<String, Periode>(
+        kafkaFactory.createConsumer<Long, Periode>(
             groupId = applicationConfig.gruppeId,
             clientId = applicationConfig.gruppeId,
-            keyDeserializer = StringDeserializer::class,
+            keyDeserializer = LongDeserializer::class,
             valueDeserializer = PeriodeDeserializer::class
         )
 
@@ -62,5 +62,5 @@ data class Dependencies(
     val dataSource: DataSource,
     val scheduleDeletionService: ScheduleDeletionService,
     val aktivePerioderGaugeScheduler: AktivePerioderGaugeScheduler,
-    val consumer: KafkaConsumer<String, Periode>
+    val consumer: KafkaConsumer<Long, Periode>
 )

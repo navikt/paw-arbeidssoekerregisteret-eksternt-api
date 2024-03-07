@@ -3,9 +3,11 @@ package no.nav.paw.arbeidssoekerregisteret.eksternt.api.repositories
 import no.nav.paw.arbeidssoekerregisteret.eksternt.api.database.PeriodeTable
 import no.nav.paw.arbeidssoekerregisteret.eksternt.api.domain.Arbeidssoekerperiode
 import no.nav.paw.arbeidssoekerregisteret.eksternt.api.domain.Identitetsnummer
+import no.nav.paw.arbeidssoekerregisteret.eksternt.api.domain.toArbeidssoekerperiode
 import no.nav.paw.arbeidssoekerregisteret.eksternt.api.utils.logger
 import no.nav.paw.arbeidssoekerregisteret.eksternt.api.utils.toInstant
 import no.nav.paw.arbeidssoekerregisteret.eksternt.api.utils.toLocalDateTime
+import no.nav.paw.arbeidssokerregisteret.api.v1.Periode
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.less
 import org.jetbrains.exposed.sql.deleteWhere
@@ -19,6 +21,21 @@ import java.time.LocalDate
 import java.util.UUID
 
 class ArbeidssoekerperiodeRepository(private val database: Database) {
+    fun storeBatch(arbeidssoekerperioder: Iterable<Periode>) {
+        transaction(database) {
+            repetitionAttempts = 2
+            minRepetitionDelay = 200
+
+            arbeidssoekerperioder.forEach { periode ->
+                if (finnesArbeidssoekerperiode(periode.id)) {
+                    oppdaterArbeidssoekerperiode(periode.toArbeidssoekerperiode())
+                } else {
+                    opprettArbeidssoekerperiode(periode.toArbeidssoekerperiode())
+                }
+            }
+        }
+    }
+
     fun hentArbeidssoekerperioder(
         identitetsnummer: Identitetsnummer,
         fraStartetDato: LocalDate?
@@ -68,9 +85,6 @@ class ArbeidssoekerperiodeRepository(private val database: Database) {
 
     fun opprettArbeidssoekerperiode(periode: Arbeidssoekerperiode) {
         transaction(database) {
-            repetitionAttempts = 2
-            minRepetitionDelay = 200
-
             PeriodeTable.insert {
                 it[periodeId] = periode.periodeId
                 it[identitetsnummer] = periode.identitetsnummer.verdi
@@ -81,18 +95,18 @@ class ArbeidssoekerperiodeRepository(private val database: Database) {
     }
 
     fun oppdaterArbeidssoekerperiode(periode: Arbeidssoekerperiode) {
-        transaction(database) {
-            if (periode.avsluttet == null) {
-                throw IllegalArgumentException("Avsluttet kan ikke være null ved oppdatering av periode")
-            }
-            try {
+        if (periode.avsluttet == null) {
+            throw IllegalArgumentException("Avsluttet kan ikke være null ved oppdatering av periode")
+        }
+        try {
+            transaction(database) {
                 PeriodeTable.update({ PeriodeTable.periodeId eq periode.periodeId }) {
                     it[avsluttet] = periode.avsluttet.toInstant()
                 }
-            } catch (e: SQLException) {
-                logger.error("Feil ved oppdatering av periode", e)
-                throw e
             }
+        } catch (e: SQLException) {
+            logger.error("Feil ved oppdatering av periode", e)
+            throw e
         }
     }
 
