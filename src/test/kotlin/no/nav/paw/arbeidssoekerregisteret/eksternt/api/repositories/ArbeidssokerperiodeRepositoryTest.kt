@@ -1,6 +1,5 @@
 package no.nav.paw.arbeidssoekerregisteret.eksternt.api.repositories
 
-import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.ints.shouldBeExactly
 import io.kotest.matchers.shouldBe
@@ -80,24 +79,20 @@ class ArbeidssokerperiodeRepositoryTest : StringSpec({
         retrievedPeriode?.avsluttet shouldNotBe periode.avsluttet
     }
 
-    "Oppdatere periode med avsluttet lik null skal ikke være mulig" {
+    "Oppdater fødselsnummer på periode" {
         val repository = ArbeidssoekerperiodeRepository(database)
 
         val periode = hentTestPeriode()
         repository.opprettArbeidssoekerperiode(periode)
 
-        val updatedPeriode = periode.copy(avsluttet = null)
+        val updatedPeriode = periode.copy(identitetsnummer = Identitetsnummer("12345678912"))
 
-        val exception =
-            shouldThrow<IllegalArgumentException> {
-                repository.oppdaterArbeidssoekerperiode(updatedPeriode)
-            }
+        repository.oppdaterArbeidssoekerperiode(updatedPeriode)
 
         val retrievedPeriode = repository.hentArbeidssoekerperiode(periode.periodeId)
 
-        exception.message shouldBe "Avsluttet kan ikke være null ved oppdatering av periode"
         retrievedPeriode shouldNotBe null
-        retrievedPeriode?.avsluttet shouldNotBe null
+        retrievedPeriode?.identitetsnummer shouldBe updatedPeriode.identitetsnummer
     }
 
     "Sletter perioder eldre enn 3 år pluss inneværende år" {
