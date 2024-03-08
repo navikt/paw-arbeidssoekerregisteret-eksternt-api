@@ -75,6 +75,9 @@ dependencies {
     testImplementation("org.testcontainers:testcontainers:1.19.1")
     testImplementation("org.testcontainers:postgresql:1.19.1")
     testImplementation("no.nav.security:mock-oauth2-server:2.0.0")
+
+    // Opentelemetry instrumentation annotation
+    implementation("io.opentelemetry.instrumentation:opentelemetry-instrumentation-annotations:2.1.0")
 }
 
 tasks.named("generateAvroProtocol", GenerateAvroProtocolTask::class.java) {

@@ -1,5 +1,6 @@
 package no.nav.paw.arbeidssoekerregisteret.eksternt.api.kafka
-
+import io.opentelemetry.api.trace.SpanKind
+import io.opentelemetry.instrumentation.annotations.WithSpan
 import no.nav.paw.arbeidssoekerregisteret.eksternt.api.services.ArbeidssoekerService
 import no.nav.paw.arbeidssoekerregisteret.eksternt.api.utils.logger
 import no.nav.paw.arbeidssokerregisteret.api.v1.Periode
@@ -18,17 +19,25 @@ class PeriodeConsumer(
         consumer.subscribe(listOf(topic))
 
         while (true) {
-            val records: ConsumerRecords<Long, Periode> =
-                consumer.poll(Duration.ofMillis(1000))
-                    .onEach {
-                        logger.info("Mottok melding fra $topic med offset ${it.offset()} partition ${it.partition()}")
-                    }
-            val perioder =
-                records.map { record: ConsumerRecord<Long, Periode> ->
-                    record.value()
-                }
-            processAndCommitBatch(perioder)
+            pollAndProcess()
         }
+    }
+
+    @WithSpan(
+        value = "get_and_process_batch",
+        kind = SpanKind.CONSUMER
+    )
+    private fun pollAndProcess() {
+        val records: ConsumerRecords<Long, Periode> =
+            consumer.poll(Duration.ofMillis(1000))
+                .onEach {
+                    logger.info("Mottok melding fra $topic med offset ${it.offset()} partition ${it.partition()}")
+                }
+        val perioder =
+            records.map { record: ConsumerRecord<Long, Periode> ->
+                record.value()
+            }
+        processAndCommitBatch(perioder)
     }
 
     private fun processAndCommitBatch(batch: Iterable<Periode>) =
