@@ -38,8 +38,9 @@ spec:
     enabled: true
     path: /internal/metrics
   observability:
-    tracing:
+    autoInstrumentation:
       enabled: true
+      runtime: java
   kafka:
     pool: nav-prod
   gcp:
