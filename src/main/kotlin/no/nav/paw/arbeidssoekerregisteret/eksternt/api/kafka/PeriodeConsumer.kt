@@ -19,7 +19,7 @@ class PeriodeConsumer(
 
         while (true) {
             val records: ConsumerRecords<Long, Periode> =
-                consumer.poll(Duration.ofMillis(500))
+                consumer.poll(Duration.ofMillis(1000))
                     .onEach {
                         logger.info("Mottok melding fra $topic med offset ${it.offset()} partition ${it.partition()}")
                     }
