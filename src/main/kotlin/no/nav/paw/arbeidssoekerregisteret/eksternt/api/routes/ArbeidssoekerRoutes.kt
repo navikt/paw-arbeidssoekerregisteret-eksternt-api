@@ -18,33 +18,38 @@ import java.time.format.DateTimeParseException
 fun Route.arbeidssoekerRoutes(arbeidssoekerService: ArbeidssoekerService) {
     route("/api/v1") {
         authenticate("maskinporten") {
-            route("/arbeidssoekerperioder") {
-                post {
-                    // Henter arbeidssøkerperiode for bruker
-                    logger.info("Henter arbeidssøkerperioder for bruker")
+            arbeidssoekerperiodeRoutes(arbeidssoekerService)
+        }
+    }
+}
 
-                    val eksternRequest =
-                        try {
-                            call.receive<EksternRequest>()
-                        } catch (e: BadRequestException) {
-                            return@post call.respond(HttpStatusCode.BadRequest, "Ugyldig request body")
-                        }
-                    val fraStartetDato =
-                        try {
-                            LocalDate.parse(eksternRequest.fraStartetDato)
-                        } catch (e: DateTimeParseException) {
-                            return@post call.respond(HttpStatusCode.BadRequest, "Ugyldig dato 'fraStartetDato' må være satt med yyyy-mm-dd")
-                        }
+fun Route.arbeidssoekerperiodeRoutes(arbeidssoekerService: ArbeidssoekerService) {
+    route("/arbeidssoekerperioder") {
+        post {
+            // Henter arbeidssøkerperiode for bruker
+            logger.info("Henter arbeidssøkerperioder for bruker")
 
-                    val identitetsnummer = eksternRequest.getIdentitetsnummer()
-
-                    val arbeidssoekerperioder = arbeidssoekerService.hentArbeidssoekerperioder(identitetsnummer, fraStartetDato)
-
-                    logger.info("Hentet arbeidssøkerperioder for bruker")
-
-                    return@post call.respond(HttpStatusCode.OK, arbeidssoekerperioder)
+            val eksternRequest =
+                try {
+                    call.receive<EksternRequest>()
+                } catch (e: BadRequestException) {
+                    return@post call.respond(HttpStatusCode.BadRequest, "Ugyldig request body")
                 }
-            }
+
+            val fraStartetDato =
+                try {
+                    LocalDate.parse(eksternRequest.fraStartetDato)
+                } catch (e: DateTimeParseException) {
+                    return@post call.respond(HttpStatusCode.BadRequest, "Ugyldig dato 'fraStartetDato' må være satt med yyyy-mm-dd")
+                }
+
+            val identitetsnummer = eksternRequest.getIdentitetsnummer()
+
+            val arbeidssoekerperioder = arbeidssoekerService.hentArbeidssoekerperioder(identitetsnummer, fraStartetDato)
+
+            logger.info("Hentet arbeidssøkerperioder for bruker")
+
+            return@post call.respond(HttpStatusCode.OK, arbeidssoekerperioder)
         }
     }
 }

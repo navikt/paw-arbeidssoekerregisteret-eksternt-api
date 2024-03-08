@@ -95,18 +95,16 @@ class ArbeidssoekerperiodeRepository(private val database: Database) {
     }
 
     fun oppdaterArbeidssoekerperiode(periode: Arbeidssoekerperiode) {
-        if (periode.avsluttet == null) {
-            throw IllegalArgumentException("Avsluttet kan ikke være null ved oppdatering av periode")
-        }
-        try {
-            transaction(database) {
+        transaction(database) {
+            try {
                 PeriodeTable.update({ PeriodeTable.periodeId eq periode.periodeId }) {
-                    it[avsluttet] = periode.avsluttet.toInstant()
+                    it[identitetsnummer] = periode.identitetsnummer.verdi
+                    it[avsluttet] = periode.avsluttet?.toInstant()
                 }
+            } catch (e: SQLException) {
+                logger.error("Feil ved oppdatering av periode", e)
+                throw e
             }
-        } catch (e: SQLException) {
-            logger.error("Feil ved oppdatering av periode", e)
-            throw e
         }
     }
 

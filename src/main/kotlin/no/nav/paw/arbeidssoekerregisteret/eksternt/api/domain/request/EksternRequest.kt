@@ -6,3 +6,11 @@ import no.nav.paw.arbeidssoekerregisteret.eksternt.api.domain.toIdentitetsnummer
 data class EksternRequest(val identitetsnummer: String, val fraStartetDato: String) {
     fun getIdentitetsnummer(): Identitetsnummer = identitetsnummer.toIdentitetsnummer()
 }
+
+fun EksternRequest.toJson(): String =
+    """
+    {
+        "identitetsnummer": "$identitetsnummer",
+        "fraStartetDato": "$fraStartetDato"
+    }
+    """.trimIndent()
