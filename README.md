@@ -93,14 +93,14 @@ Kafka UI ligger i docker-compose, og finnes på http://localhost:9000
 
 Kjør `./gradlew produceLocalMessagesForTopics`
 
-Denne tasken sender to meldinger til `arbeidssokerperioder-beta-v7`.
+Denne tasken sender to meldinger til `arbeidssokerperioder-beta-v11`.
 
 ### Consumer
 
-Konsumer meldinger fra `arbeidssokerperioder-beta-v7`
+Konsumer meldinger fra `arbeidssokerperioder-beta-v11`
 
 ```sh
-docker exec -it paw-arbeidssoekerregisteret-eksternt-api_kafka_1 /usr/bin/kafka-console-consumer --bootstrap-server 127.0.0.1:9092 --topic arbeidssoekerperioder-beta-v7
+docker exec -it paw-arbeidssoekerregisteret-eksternt-api_kafka_1 /usr/bin/kafka-console-consumer --bootstrap-server 127.0.0.1:9092 --topic arbeidssoekerperioder-beta-v11
 ```
 
 ## Formatering
