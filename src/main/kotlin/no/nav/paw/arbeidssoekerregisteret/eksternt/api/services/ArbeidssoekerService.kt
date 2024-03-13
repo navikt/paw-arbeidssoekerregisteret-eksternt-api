@@ -8,7 +8,7 @@ import no.nav.paw.arbeidssokerregisteret.api.v1.Periode
 import java.time.LocalDate
 
 class ArbeidssoekerService(private val arbeidssoekerperiodeRepository: ArbeidssoekerperiodeRepository) {
-    fun storeBatch(arbeidssoekerperioder: Iterable<Periode>) {
+    fun storeBatch(arbeidssoekerperioder: Sequence<Periode>) {
         arbeidssoekerperiodeRepository.storeBatch(arbeidssoekerperioder)
     }
 
