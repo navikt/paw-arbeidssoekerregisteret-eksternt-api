@@ -97,10 +97,10 @@ Denne tasken sender to meldinger til `arbeidssokerperioder-beta-v11`.
 
 ### Consumer
 
-Konsumer meldinger fra `arbeidssokerperioder-beta-v11`
+Konsumer meldinger fra `arbeidssokerperioder-v1`
 
 ```sh
-docker exec -it paw-arbeidssoekerregisteret-eksternt-api_kafka_1 /usr/bin/kafka-console-consumer --bootstrap-server 127.0.0.1:9092 --topic arbeidssoekerperioder-beta-v11
+docker exec -it paw-arbeidssoekerregisteret-eksternt-api_kafka_1 /usr/bin/kafka-console-consumer --bootstrap-server 127.0.0.1:9092 --topic arbeidssoekerperioder-v1
 ```
 
 ## Formatering
