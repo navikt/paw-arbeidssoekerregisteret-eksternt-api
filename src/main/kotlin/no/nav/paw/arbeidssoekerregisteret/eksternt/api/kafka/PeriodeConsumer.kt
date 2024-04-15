@@ -15,6 +15,7 @@ class PeriodeConsumer(
     private val arbeidssoekerService: ArbeidssoekerService
 ) {
     private var running = true
+
     fun start() {
         logger.info("Lytter på topic $topic")
         consumer.subscribe(listOf(topic))

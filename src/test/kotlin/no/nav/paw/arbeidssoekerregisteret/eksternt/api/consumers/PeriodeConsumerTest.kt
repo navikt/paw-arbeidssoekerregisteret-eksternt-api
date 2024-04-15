@@ -53,19 +53,25 @@ class PeriodeConsumerTest : FreeSpec({
 private fun createConsumerRecords(): ConsumerRecords<Long, Periode> {
     val records = mutableMapOf<TopicPartition, MutableList<ConsumerRecord<Long, Periode>>>()
     val topic = "test-topic"
-    records[TopicPartition(topic, 0)] = mutableListOf(ConsumerRecord(topic, 0, 0, 1L, Periode(
-        UUID.randomUUID(),
-        "12345678901",
-        Metadata(
-            Instant.now(),
-            Bruker(
-                BrukerType.SLUTTBRUKER,
-                "12345678901"
-            ),
-            "test",
-            "test"
-        ),
-        null
-    )))
+    records[TopicPartition(topic, 0)] =
+        mutableListOf(
+            ConsumerRecord(
+                topic, 0, 0, 1L,
+                Periode(
+                    UUID.randomUUID(),
+                    "12345678901",
+                    Metadata(
+                        Instant.now(),
+                        Bruker(
+                            BrukerType.SLUTTBRUKER,
+                            "12345678901"
+                        ),
+                        "test",
+                        "test"
+                    ),
+                    null
+                )
+            )
+        )
     return ConsumerRecords(records)
 }
