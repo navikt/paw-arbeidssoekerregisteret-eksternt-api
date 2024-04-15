@@ -14,13 +14,19 @@ class PeriodeConsumer(
     private val consumer: KafkaConsumer<Long, Periode>,
     private val arbeidssoekerService: ArbeidssoekerService
 ) {
+    private var running = true
     fun start() {
         logger.info("Lytter på topic $topic")
         consumer.subscribe(listOf(topic))
 
-        while (true) {
+        while (running) {
             pollAndProcess()
         }
+    }
+
+    fun stop() {
+        running = false
+        consumer.unsubscribe()
     }
 
     @WithSpan(

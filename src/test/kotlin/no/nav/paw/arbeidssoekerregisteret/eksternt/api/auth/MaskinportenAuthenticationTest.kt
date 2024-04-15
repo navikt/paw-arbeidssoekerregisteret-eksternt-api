@@ -7,13 +7,13 @@ import io.ktor.client.request.get
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.config.MapApplicationConfig
 import io.ktor.server.testing.testApplication
-import no.nav.paw.arbeidssoekerregisteret.eksternt.api.TestData
+import no.nav.paw.arbeidssoekerregisteret.eksternt.api.AuthTestData
 import no.nav.security.mock.oauth2.MockOAuth2Server
 
 class MaskinportenAuthenticationTest : FunSpec({
     val oauth = MockOAuth2Server()
     val testAuthUrl = "/testAuthMaskinporten"
-    val claims = mapOf("scope" to TestData.maskinportenScope)
+    val claims = mapOf("scope" to AuthTestData.maskinportenScope)
 
     beforeSpec {
         oauth.start(8081)

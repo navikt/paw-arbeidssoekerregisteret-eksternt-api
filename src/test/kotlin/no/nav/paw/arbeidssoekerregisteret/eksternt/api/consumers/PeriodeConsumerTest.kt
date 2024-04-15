@@ -1,80 +1,71 @@
 package no.nav.paw.arbeidssoekerregisteret.eksternt.api.consumers
 
-import io.kotest.core.spec.style.FunSpec
-/*import io.mockk.Runs
+import io.kotest.core.spec.style.FreeSpec
+import io.mockk.Runs
 import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
 import io.mockk.verify
+import no.nav.paw.arbeidssoekerregisteret.eksternt.api.kafka.PeriodeConsumer
+import no.nav.paw.arbeidssoekerregisteret.eksternt.api.services.ArbeidssoekerService
+import no.nav.paw.arbeidssokerregisteret.api.v1.Bruker
+import no.nav.paw.arbeidssokerregisteret.api.v1.BrukerType
+import no.nav.paw.arbeidssokerregisteret.api.v1.Metadata
 import no.nav.paw.arbeidssokerregisteret.api.v1.Periode
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.apache.kafka.clients.consumer.ConsumerRecords
 import org.apache.kafka.clients.consumer.KafkaConsumer
 import org.apache.kafka.common.TopicPartition
 import java.time.Duration
-import kotlin.concurrent.thread*/
+import java.time.Instant
+import java.util.*
+import kotlin.concurrent.thread
 
-class PeriodeConsumerTest : FunSpec({
-    test("test") {
-        assert(true)
-    }
-
-    /*test("should consume and process messages when toggle is active") {
+class PeriodeConsumerTest : FreeSpec({
+    "should consume and process messages when started and stop when stopped" {
         val topic = "test-topic"
         val consumerMock = mockk<KafkaConsumer<Long, Periode>>()
-        val serviceMock = mockk<ArbeidssoekerperiodeService>()
-        val unleashClientMock = mockk<Unleash>()
+        val serviceMock = mockk<ArbeidssoekerService>()
 
-        val consumer = BatchConsumer(topic, consumerMock, serviceMock::lagreBatch, unleashClientMock)
+        val consumer = PeriodeConsumer(topic, consumerMock, serviceMock)
 
-        every { unleashClientMock.isEnabled("aktiver-kafka-konsumere") } returns true
         every { consumerMock.subscribe(listOf(topic)) } just Runs
-        every { consumerMock.assignment() } returns setOf(TopicPartition(topic, 0))
+        every { consumerMock.unsubscribe() } just Runs
         every { consumerMock.poll(any<Duration>()) } returns createConsumerRecords()
-        every { serviceMock.lagreBatch(any()) } just Runs
+        every { serviceMock.storeBatch(any()) } just Runs
         every { consumerMock.commitSync() } just Runs
-        every { consumerMock.resume(any()) } just Runs
 
         thread {
             consumer.start()
         }
 
         verify { consumerMock.subscribe(listOf(topic)) }
-        verify { consumerMock.assignment() }
         verify { consumerMock.poll(any<Duration>()) }
-        verify { serviceMock.lagreBatch(any()) }
+        verify { serviceMock.storeBatch(any()) }
         verify { consumerMock.commitSync() }
 
         consumer.stop()
+
+        verify { consumerMock.unsubscribe() }
     }
-
-    test("should not consume messages when toggle is inactive") {
-        val topic = "test-topic"
-        val consumerMock = mockk<KafkaConsumer<Long, Periode>>()
-        val serviceMock = mockk<ArbeidssoekerperiodeService>()
-        val unleashClientMock = mockk<Unleash>()
-
-        val consumer = BatchConsumer(topic, consumerMock, serviceMock::lagreBatch, unleashClientMock)
-
-        every { unleashClientMock.isEnabled("aktiver-kafka-konsumere") } returns false
-        every { consumerMock.subscribe(listOf(topic)) } just Runs
-
-        thread {
-            consumer.start()
-        }
-
-        verify { consumerMock.subscribe(listOf(topic)) }
-        verify(exactly = 0) { consumerMock.poll(any<Duration>()) }
-        verify(exactly = 0) { serviceMock.lagreBatch(any()) }
-        verify(exactly = 0) { consumerMock.commitSync() }
-
-        consumer.stop()
-    }*/
 })
 
-/*private fun createConsumerRecords(): ConsumerRecords<Long, Periode> {
+private fun createConsumerRecords(): ConsumerRecords<Long, Periode> {
     val records = mutableMapOf<TopicPartition, MutableList<ConsumerRecord<Long, Periode>>>()
     val topic = "test-topic"
-    records[TopicPartition(topic, 0)] = mutableListOf(ConsumerRecord(topic, 0, 0, 1L, TopicUtils().lagTestPerioder()[0]))
+    records[TopicPartition(topic, 0)] = mutableListOf(ConsumerRecord(topic, 0, 0, 1L, Periode(
+        UUID.randomUUID(),
+        "12345678901",
+        Metadata(
+            Instant.now(),
+            Bruker(
+                BrukerType.SLUTTBRUKER,
+                "12345678901"
+            ),
+            "test",
+            "test"
+        ),
+        null
+    )))
     return ConsumerRecords(records)
-}*/
+}
