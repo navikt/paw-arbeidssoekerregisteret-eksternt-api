@@ -4,7 +4,7 @@ Eksternt API for å levere arbeidssøkerperioder fra arbeidssøkerregistreret
 
 ## Dokumentasjon for API
 
-https://arbeidssoekerperioder.dev.nav.no/docs
+https://arbeidssoekerperioder.ekstern.dev.nav.no/docs
 
 ## Flydiagram
 
