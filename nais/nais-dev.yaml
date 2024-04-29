@@ -8,7 +8,7 @@ metadata:
 spec:
   image: {{ image }}
   ingresses:
-    - https://arbeidssoekerregisteret.ekstern.dev.nav.no
+    - https://arbeidssoekerperioder.dev.nav.no
   port: 8080
   maskinporten:
     enabled: true

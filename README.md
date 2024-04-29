@@ -4,7 +4,7 @@ Eksternt API for å levere arbeidssøkerperioder fra arbeidssøkerregistreret
 
 ## Dokumentasjon for API
 
-https://arbeidssoekerregisteret.ekstern.dev.nav.no/docs
+https://arbeidssoekerperioder.dev.nav.no/docs
 
 ## Flydiagram
 
@@ -93,7 +93,7 @@ Kafka UI ligger i docker-compose, og finnes på http://localhost:9000
 
 Kjør `./gradlew produceLocalMessagesForTopics`
 
-Denne tasken sender to meldinger til `arbeidssokerperioder-beta-v11`.
+Denne tasken sender to meldinger til `arbeidssokerperioder-v1`.
 
 ### Consumer
 
