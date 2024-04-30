@@ -2,8 +2,7 @@ package no.nav.paw.arbeidssoekerregisteret.eksternt.api.kafka
 
 import no.nav.paw.arbeidssoekerregisteret.eksternt.api.config.APPLICATION_CONFIG_FILE
 import no.nav.paw.arbeidssoekerregisteret.eksternt.api.config.ApplicationConfiguration
-import no.nav.paw.arbeidssoekerregisteret.eksternt.api.utils.LocalProducerUtils
-import no.nav.paw.arbeidssoekerregisteret.eksternt.api.utils.PeriodeSerializer
+import no.nav.paw.arbeidssoekerregisteret.eksternt.api.kafka.serdes.PeriodeSerializer
 import no.nav.paw.arbeidssokerregisteret.api.v1.Periode
 import no.nav.paw.config.hoplite.loadNaisOrLocalConfiguration
 import no.nav.paw.config.kafka.KAFKA_CONFIG_WITH_SCHEME_REG
@@ -26,7 +25,7 @@ fun produserPeriodeMeldinger(
 ) {
     val localProducer = LocalProducer(kafkaConfig, applicationConfig)
     try {
-        LocalProducerUtils().lagTestPerioder().forEach { periode ->
+        PeriodeProducerUtils().lagTestPerioder().forEach { periode ->
             localProducer.producePeriodeMessage(applicationConfig.periodeTopic, periode.id.toString(), periode)
         }
     } catch (e: Exception) {

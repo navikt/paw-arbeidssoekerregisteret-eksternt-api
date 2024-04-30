@@ -12,8 +12,8 @@ import io.ktor.http.*
 import io.ktor.serialization.jackson.*
 import io.ktor.server.config.*
 import io.ktor.server.testing.*
-import no.nav.paw.arbeidssoekerregisteret.eksternt.api.domain.request.EksternRequest
-import no.nav.paw.arbeidssoekerregisteret.eksternt.api.domain.request.toJson
+import no.nav.paw.arbeidssoekerregisteret.eksternt.api.models.EksternRequest
+import no.nav.paw.arbeidssoekerregisteret.eksternt.api.models.toJson
 import no.nav.paw.arbeidssoekerregisteret.eksternt.api.testModule
 
 class ArbeidssoekerRoutesTest : FunSpec({

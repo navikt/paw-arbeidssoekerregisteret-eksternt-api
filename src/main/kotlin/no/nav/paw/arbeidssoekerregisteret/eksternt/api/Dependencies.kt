@@ -5,11 +5,11 @@ import io.micrometer.prometheus.PrometheusMeterRegistry
 import no.nav.paw.arbeidssoekerregisteret.eksternt.api.config.APPLICATION_CONFIG_FILE
 import no.nav.paw.arbeidssoekerregisteret.eksternt.api.config.ApplicationConfiguration
 import no.nav.paw.arbeidssoekerregisteret.eksternt.api.kafka.PeriodeConsumer
+import no.nav.paw.arbeidssoekerregisteret.eksternt.api.kafka.serdes.PeriodeDeserializer
 import no.nav.paw.arbeidssoekerregisteret.eksternt.api.metrics.AktivePerioderGaugeScheduler
 import no.nav.paw.arbeidssoekerregisteret.eksternt.api.repositories.ArbeidssoekerperiodeRepository
 import no.nav.paw.arbeidssoekerregisteret.eksternt.api.services.ArbeidssoekerService
 import no.nav.paw.arbeidssoekerregisteret.eksternt.api.services.ScheduleDeletionService
-import no.nav.paw.arbeidssoekerregisteret.eksternt.api.utils.PeriodeDeserializer
 import no.nav.paw.arbeidssoekerregisteret.eksternt.api.utils.generateDatasource
 import no.nav.paw.arbeidssokerregisteret.api.v1.Periode
 import no.nav.paw.config.hoplite.loadNaisOrLocalConfiguration

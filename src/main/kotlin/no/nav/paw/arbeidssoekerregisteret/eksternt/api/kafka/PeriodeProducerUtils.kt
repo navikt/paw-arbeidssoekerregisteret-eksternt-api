@@ -1,4 +1,4 @@
-package no.nav.paw.arbeidssoekerregisteret.eksternt.api.utils
+package no.nav.paw.arbeidssoekerregisteret.eksternt.api.kafka
 import no.nav.paw.arbeidssokerregisteret.api.v1.Bruker
 import no.nav.paw.arbeidssokerregisteret.api.v1.BrukerType
 import no.nav.paw.arbeidssokerregisteret.api.v1.Metadata
@@ -6,7 +6,7 @@ import no.nav.paw.arbeidssokerregisteret.api.v1.Periode
 import java.time.Instant
 import java.util.UUID
 
-class LocalProducerUtils {
+class PeriodeProducerUtils {
     val testPeriodeId1 = UUID.fromString("00000000-0000-0000-0000-000000000001")
     val testPeriodeId2 = UUID.fromString("00000000-0000-0000-0000-000000000002")
 

@@ -1,10 +1,12 @@
 import com.github.davidmc24.gradle.plugin.avro.GenerateAvroProtocolTask
+import org.jmailen.gradle.kotlinter.tasks.LintTask
 
 plugins {
     kotlin("jvm") version "1.9.20"
     id("io.ktor.plugin") version "2.3.5"
     id("org.jmailen.kotlinter") version "4.0.0"
     id("com.github.davidmc24.gradle.plugin.avro") version "1.9.1"
+    id("org.openapi.generator") version "7.4.0"
     application
 }
 
@@ -81,12 +83,61 @@ dependencies {
     implementation("io.opentelemetry.instrumentation:opentelemetry-instrumentation-annotations:2.1.0")
 }
 
+sourceSets {
+    main {
+        kotlin {
+            srcDir("${layout.buildDirectory.get()}/generated/src/main/kotlin")
+        }
+    }
+}
+
+val openApiDocFile = "${layout.projectDirectory}/src/main/resources/openapi/documentation.yaml"
+val generatedCodePackageName = "no.nav.paw.arbeidssoekerregisteret.eksternt.api"
+val generatedCodeOutputDir = "${layout.buildDirectory.get()}/generated/"
+
+tasks.withType<LintTask>() {
+    dependsOn("openApiGenerate")
+    source = (source - fileTree("build")).asFileTree
+}
+
+openApiValidate {
+    inputSpec = openApiDocFile
+}
+
+openApiGenerate {
+    generatorName.set("kotlin-server")
+    library = "ktor"
+    inputSpec = openApiDocFile
+    outputDir = generatedCodeOutputDir
+    packageName = generatedCodePackageName
+    configOptions.set(
+        mapOf(
+            "serializationLibrary" to "jackson",
+            "enumPropertyNaming" to "original",
+        ),
+    )
+    typeMappings = mapOf(
+        "DateTime" to "LocalDateTime",
+    )
+    globalProperties = mapOf(
+        "apis" to "none",
+        "models" to ""
+    )
+    importMappings = mapOf(
+        "LocalDateTime" to "java.time.LocalDateTime"
+    )
+}
+
 tasks.named("generateAvroProtocol", GenerateAvroProtocolTask::class.java) {
     source(zipTree(schema.singleFile))
 }
 
 tasks.named("compileTestKotlin") {
-    dependsOn("generateTestAvroJava")
+    dependsOn("generateTestAvroJava", "openApiValidate", "openApiGenerate")
+}
+
+tasks.named("compileKotlin") {
+    dependsOn("generateAvroProtocol", "openApiValidate", "openApiGenerate")
 }
 
 tasks.withType<Test>().configureEach {
