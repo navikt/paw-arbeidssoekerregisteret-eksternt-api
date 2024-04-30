@@ -8,8 +8,26 @@ https://arbeidssoekerperioder.ekstern.dev.nav.no/docs
 
 ## Flydiagram
 
-![Flytdiagram](docs/flytdiagram.png)
-[Link til flytdiagram](https://whimsical.com/paw-arbeidssoekerregisteret-eksternt-api-DQwNxVL1RTeohmsqyTL54N)
+```mermaid
+flowchart LR;
+    A(Konsumenter);
+    subgraph paw-arbeidssoekerregisteret-eksternt-api
+        B[Maskinporten];
+        id1[REST API <br/> <br/> POST /api/v1/arbeidssoekerperioder <br/> <br/>];
+        id2[Helseendepunkter <br/> Opentelemetry tracing <br/> Logging <br/> <br/>];
+        C[Services];
+        D[(Database)];
+        E[Consumer];
+    end;
+    F[Kafka topic: paw.arbeidssoekerperiode-v1];
+    A-->B;
+    B-->id1;
+    id2~~~id1
+    id1-->C;
+    C-->D;
+    E-->D;
+    F-->E;
+```
 
 ## Teknologier
 
