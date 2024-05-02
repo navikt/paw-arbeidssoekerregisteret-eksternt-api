@@ -18,12 +18,4 @@ fun Periode.toArbeidssoekerperiode() =
         avsluttet = avsluttet?.tidspunkt?.toLocalDateTime()
     )
 
-fun EksternRequest.toJson(): String =
-    """
-    {
-        "identitetsnummer": "$identitetsnummer",
-        "fraStartetDato": "$fraStartetDato"
-    }
-    """.trimIndent()
-
 fun EksternRequest.getIdentitetsnummer() = this.identitetsnummer.toIdentitetsnummer()

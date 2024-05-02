@@ -13,7 +13,6 @@ import io.ktor.serialization.jackson.*
 import io.ktor.server.config.*
 import io.ktor.server.testing.*
 import no.nav.paw.arbeidssoekerregisteret.eksternt.api.models.EksternRequest
-import no.nav.paw.arbeidssoekerregisteret.eksternt.api.models.toJson
 import no.nav.paw.arbeidssoekerregisteret.eksternt.api.testModule
 
 class ArbeidssoekerRoutesTest : FreeSpec({
@@ -42,12 +41,10 @@ class ArbeidssoekerRoutesTest : FreeSpec({
                     }
                 }
 
-            val jsonPostBody = EksternRequest("12345678911", "2021-01-01").toJson()
-
             val response =
                 client.post("/arbeidssoekerperioder") {
                     contentType(ContentType.Application.Json)
-                    setBody(jsonPostBody)
+                    setBody(EksternRequest("12345678911", "2021-01-01"))
                 }
             response.status shouldBe HttpStatusCode.OK
         }
@@ -78,12 +75,10 @@ class ArbeidssoekerRoutesTest : FreeSpec({
                     }
                 }
 
-            val wrongDateFormattingJsonPostBody = EksternRequest("12345678911", "01-01-2021").toJson()
-
             val wrongDateFormattingResponse =
                 client.post("/arbeidssoekerperioder") {
                     contentType(ContentType.Application.Json)
-                    setBody(wrongDateFormattingJsonPostBody)
+                    setBody(EksternRequest("12345678911", "01-01-2021"))
                 }
 
             val wrongRequestBodyResponse =
