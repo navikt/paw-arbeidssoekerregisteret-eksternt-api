@@ -9,7 +9,7 @@ https://arbeidssoekerperioder.ekstern.dev.nav.no/docs
 ## Flydiagram
 
 ```mermaid
-flowchart LR;
+flowchart RL;
     A(Konsumenter);
     subgraph paw-arbeidssoekerregisteret-eksternt-api
         B[Maskinporten];
@@ -23,8 +23,8 @@ flowchart LR;
     A-->B;
     B-->id1;
     id2~~~id1
-    id1-->C;
-    C-->D;
+    C-->id1;
+    D-->C;
     E-->D;
     F-->E;
 ```
