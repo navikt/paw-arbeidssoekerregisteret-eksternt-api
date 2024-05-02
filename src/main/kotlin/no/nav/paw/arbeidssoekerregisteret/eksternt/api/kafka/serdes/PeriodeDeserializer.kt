@@ -1,4 +1,4 @@
-package no.nav.paw.arbeidssoekerregisteret.eksternt.api.utils
+package no.nav.paw.arbeidssoekerregisteret.eksternt.api.kafka.serdes
 
 import io.confluent.kafka.serializers.KafkaAvroDeserializer
 import no.nav.paw.arbeidssokerregisteret.api.v1.Periode

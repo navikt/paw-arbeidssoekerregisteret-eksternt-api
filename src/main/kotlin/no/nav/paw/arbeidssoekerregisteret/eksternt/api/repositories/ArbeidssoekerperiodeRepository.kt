@@ -1,9 +1,9 @@
 package no.nav.paw.arbeidssoekerregisteret.eksternt.api.repositories
 
 import no.nav.paw.arbeidssoekerregisteret.eksternt.api.database.PeriodeTable
-import no.nav.paw.arbeidssoekerregisteret.eksternt.api.domain.Arbeidssoekerperiode
-import no.nav.paw.arbeidssoekerregisteret.eksternt.api.domain.Identitetsnummer
-import no.nav.paw.arbeidssoekerregisteret.eksternt.api.domain.toArbeidssoekerperiode
+import no.nav.paw.arbeidssoekerregisteret.eksternt.api.models.Arbeidssoekerperiode
+import no.nav.paw.arbeidssoekerregisteret.eksternt.api.models.Identitetsnummer
+import no.nav.paw.arbeidssoekerregisteret.eksternt.api.models.toArbeidssoekerperiode
 import no.nav.paw.arbeidssoekerregisteret.eksternt.api.utils.logger
 import no.nav.paw.arbeidssoekerregisteret.eksternt.api.utils.toInstant
 import no.nav.paw.arbeidssoekerregisteret.eksternt.api.utils.toLocalDateTime

@@ -9,7 +9,8 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.post
 import io.ktor.server.routing.route
-import no.nav.paw.arbeidssoekerregisteret.eksternt.api.domain.request.EksternRequest
+import no.nav.paw.arbeidssoekerregisteret.eksternt.api.models.EksternRequest
+import no.nav.paw.arbeidssoekerregisteret.eksternt.api.models.getIdentitetsnummer
 import no.nav.paw.arbeidssoekerregisteret.eksternt.api.services.ArbeidssoekerService
 import no.nav.paw.arbeidssoekerregisteret.eksternt.api.utils.logger
 import java.time.LocalDate

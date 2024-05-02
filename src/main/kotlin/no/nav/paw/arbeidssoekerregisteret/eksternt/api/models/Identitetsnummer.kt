@@ -1,4 +1,4 @@
-package no.nav.paw.arbeidssoekerregisteret.eksternt.api.domain
+package no.nav.paw.arbeidssoekerregisteret.eksternt.api.models
 
 data class Identitetsnummer(val verdi: String) {
     override fun toString(): String {

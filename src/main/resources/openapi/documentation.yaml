@@ -4,14 +4,17 @@ info:
   description: "paw_arbeidssoekerregisteret_eksternt_api API"
   version: "1.0.0"
 servers:
-- url: "https://paw_arbeidssoekerregisteret_eksternt_api"
+    - url: "https://arbeidssoekerperioder.nav.no"
+      description: "Production"
+    - url: "https://arbeidssoekerperioder.ekstern.dev.nav.no"
+      description: "Development"
 paths:
   /api/v1/arbeidssoekerperioder:
     post:
       description: ""
       requestBody:
         content:
-          'application/json':
+          application/json:
             schema:
               $ref: "#/components/schemas/EksternRequest"
         required: true
@@ -30,7 +33,7 @@ paths:
         "200":
           description: "OK"
           content:
-            'application/json':
+            application/json:
               schema:
                 type: "array"
                 items:
@@ -68,7 +71,7 @@ paths:
         "200":
           description: "OK"
           content:
-            '*/*':
+            application/json:
               schema:
                 type: "string"
 components:
@@ -81,7 +84,6 @@ components:
           example: "12345678901"
         fraStartetDato:
           type: "string"
-          format: "date"
           example: "2021-01-01"
       required:
       - "identitetsnummer"
@@ -95,6 +97,7 @@ components:
         startet:
           type: "string"
           format: "date-time"
+          example: "2021-01-01T12:00:00Z"
         avsluttet:
           type: "string"
           format: "date-time"

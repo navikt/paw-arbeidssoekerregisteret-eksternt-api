@@ -3,7 +3,7 @@ package no.nav.paw.arbeidssoekerregisteret.eksternt.api.routes
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import io.kotest.core.spec.style.FunSpec
+import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.shouldBe
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
@@ -12,12 +12,11 @@ import io.ktor.http.*
 import io.ktor.serialization.jackson.*
 import io.ktor.server.config.*
 import io.ktor.server.testing.*
-import no.nav.paw.arbeidssoekerregisteret.eksternt.api.domain.request.EksternRequest
-import no.nav.paw.arbeidssoekerregisteret.eksternt.api.domain.request.toJson
+import no.nav.paw.arbeidssoekerregisteret.eksternt.api.models.EksternRequest
 import no.nav.paw.arbeidssoekerregisteret.eksternt.api.testModule
 
-class ArbeidssoekerRoutesTest : FunSpec({
-    test("should respond with 200 OK") {
+class ArbeidssoekerRoutesTest : FreeSpec({
+    "should respond with 200 OK" {
         testApplication {
             environment {
                 config =
@@ -45,18 +44,13 @@ class ArbeidssoekerRoutesTest : FunSpec({
             val response =
                 client.post("/arbeidssoekerperioder") {
                     contentType(ContentType.Application.Json)
-                    setBody(
-                        EksternRequest(
-                            identitetsnummer = "12345678911",
-                            fraStartetDato = "2021-01-01"
-                        ).toJson()
-                    )
+                    setBody(EksternRequest("12345678911", "2021-01-01"))
                 }
             response.status shouldBe HttpStatusCode.OK
         }
     }
 
-    test("should respond with 400 BadRequest") {
+    "should respond with 400 BadRequest" {
         testApplication {
             environment {
                 config =
@@ -84,12 +78,7 @@ class ArbeidssoekerRoutesTest : FunSpec({
             val wrongDateFormattingResponse =
                 client.post("/arbeidssoekerperioder") {
                     contentType(ContentType.Application.Json)
-                    setBody(
-                        EksternRequest(
-                            identitetsnummer = "12345678911",
-                            fraStartetDato = "01-01-2021"
-                        )
-                    )
+                    setBody(EksternRequest("12345678911", "01-01-2021"))
                 }
 
             val wrongRequestBodyResponse =

@@ -2,8 +2,7 @@ package no.nav.paw.arbeidssoekerregisteret.eksternt.api.kafka
 
 import no.nav.paw.arbeidssoekerregisteret.eksternt.api.config.APPLICATION_CONFIG_FILE
 import no.nav.paw.arbeidssoekerregisteret.eksternt.api.config.ApplicationConfiguration
-import no.nav.paw.arbeidssoekerregisteret.eksternt.api.utils.LocalProducerUtils
-import no.nav.paw.arbeidssoekerregisteret.eksternt.api.utils.PeriodeSerializer
+import no.nav.paw.arbeidssoekerregisteret.eksternt.api.kafka.serdes.PeriodeSerializer
 import no.nav.paw.arbeidssokerregisteret.api.v1.Periode
 import no.nav.paw.config.hoplite.loadNaisOrLocalConfiguration
 import no.nav.paw.config.kafka.KAFKA_CONFIG_WITH_SCHEME_REG
@@ -11,7 +10,7 @@ import no.nav.paw.config.kafka.KafkaConfig
 import no.nav.paw.config.kafka.KafkaFactory
 import org.apache.kafka.clients.producer.Producer
 import org.apache.kafka.clients.producer.ProducerRecord
-import org.apache.kafka.common.serialization.StringSerializer
+import org.apache.kafka.common.serialization.LongSerializer
 
 fun main() {
     val kafkaConfig = loadNaisOrLocalConfiguration<KafkaConfig>(KAFKA_CONFIG_WITH_SCHEME_REG)
@@ -26,8 +25,8 @@ fun produserPeriodeMeldinger(
 ) {
     val localProducer = LocalProducer(kafkaConfig, applicationConfig)
     try {
-        LocalProducerUtils().lagTestPerioder().forEach { periode ->
-            localProducer.producePeriodeMessage(applicationConfig.periodeTopic, periode.id.toString(), periode)
+        PeriodeProducerUtils().lagTestPerioder().forEach { periode ->
+            localProducer.producePeriodeMessage(applicationConfig.periodeTopic, 1234L, periode)
         }
     } catch (e: Exception) {
         println("LocalProducer periode error: ${e.message}")
@@ -36,17 +35,17 @@ fun produserPeriodeMeldinger(
 }
 
 class LocalProducer(kafkaConfig: KafkaConfig, applicationConfig: ApplicationConfiguration) {
-    private val periodeProducer: Producer<String, Periode> =
+    private val periodeProducer: Producer<Long, Periode> =
         KafkaFactory(kafkaConfig)
-            .createProducer<String, Periode>(
+            .createProducer<Long, Periode>(
                 clientId = applicationConfig.gruppeId,
-                keySerializer = StringSerializer::class,
+                keySerializer = LongSerializer::class,
                 valueSerializer = PeriodeSerializer::class
             )
 
     fun producePeriodeMessage(
         topic: String,
-        key: String,
+        key: Long,
         value: Periode
     ) {
         val record = ProducerRecord(topic, key, value)

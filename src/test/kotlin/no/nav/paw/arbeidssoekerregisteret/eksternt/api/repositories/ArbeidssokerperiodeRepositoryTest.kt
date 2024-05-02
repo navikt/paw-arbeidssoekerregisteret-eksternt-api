@@ -4,8 +4,8 @@ import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.ints.shouldBeExactly
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
-import no.nav.paw.arbeidssoekerregisteret.eksternt.api.domain.Arbeidssoekerperiode
-import no.nav.paw.arbeidssoekerregisteret.eksternt.api.domain.Identitetsnummer
+import no.nav.paw.arbeidssoekerregisteret.eksternt.api.models.Arbeidssoekerperiode
+import no.nav.paw.arbeidssoekerregisteret.eksternt.api.models.Identitetsnummer
 import no.nav.paw.arbeidssoekerregisteret.eksternt.api.utils.TimeUtils.getMaxDateForDatabaseStorage
 import no.nav.paw.arbeidssoekerregisteret.eksternt.api.utils.toInstant
 import org.jetbrains.exposed.sql.Database
