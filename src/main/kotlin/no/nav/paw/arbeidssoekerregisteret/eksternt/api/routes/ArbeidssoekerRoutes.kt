@@ -38,10 +38,12 @@ fun Route.arbeidssoekerperiodeRoutes(arbeidssoekerService: ArbeidssoekerService)
                 }
 
             val fraStartetDato =
-                try {
-                    LocalDate.parse(eksternRequest.fraStartetDato)
-                } catch (e: DateTimeParseException) {
-                    return@post call.respond(HttpStatusCode.BadRequest, "Ugyldig dato 'fraStartetDato' må være satt med yyyy-mm-dd")
+                eksternRequest.fraStartetDato?.let {
+                    try {
+                        LocalDate.parse(it)
+                    } catch (e: DateTimeParseException) {
+                        return@post call.respond(HttpStatusCode.BadRequest, "Ugyldig dato 'fraStartetDato' må være satt med yyyy-mm-dd")
+                    }
                 }
 
             val identitetsnummer = eksternRequest.getIdentitetsnummer()

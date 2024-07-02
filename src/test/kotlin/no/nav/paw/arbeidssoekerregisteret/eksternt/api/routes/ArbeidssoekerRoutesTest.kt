@@ -41,11 +41,19 @@ class ArbeidssoekerRoutesTest : FreeSpec({
                     }
                 }
 
-            val response =
+            val responseFraStartetDato =
                 client.post("/arbeidssoekerperioder") {
                     contentType(ContentType.Application.Json)
                     setBody(EksternRequest("12345678911", "2021-01-01"))
                 }
+
+            val response =
+                client.post("/arbeidssoekerperioder") {
+                    contentType(ContentType.Application.Json)
+                    setBody(EksternRequest("12345678911"))
+                }
+
+            responseFraStartetDato.status shouldBe HttpStatusCode.OK
             response.status shouldBe HttpStatusCode.OK
         }
     }
