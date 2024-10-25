@@ -1,3 +1,6 @@
+> [!WARNING]
+> Koden er flyttet til [paw-arbeidssoekerregisteret-monorepo-ekstern](https://github.com/navikt/paw-arbeidssoekerregisteret-monorepo-ekstern/tree/main/apps/eksternt-api)
+
 # paw-arbeidssoekerregisteret-eksternt-api
 
 Eksternt API for å levere arbeidssøkerperioder fra arbeidssøkerregistreret
